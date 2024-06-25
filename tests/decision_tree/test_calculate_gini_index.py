@@ -1,3 +1,5 @@
+import pytest
+
 from decision_tree import DecisionTree
 
 from classes.decision_tree_decision_outcome_above import (
@@ -33,7 +35,7 @@ def test_with_small_student_dataset_attribute_age(small_student_dataset):
     )
 
     # Check if the calculated gini index (reduction of impurity) is correct
-    assert gini_index_value == 0.05555555555555558
+    assert gini_index_value == pytest.approx(0.05555555555555558)
 
     # Check if the outcomes are correct (25.0 has the lowest gini index)
     assert len(outcomes) == 2
@@ -59,7 +61,7 @@ def test_with_small_student_dataset_attribute_major(small_student_dataset):
     )
 
     # Check if the calculated gini index (reduction of impurity) is correct
-    assert gini_index_value == 0.5 - 0.4
+    assert gini_index_value == pytest.approx(0.1)
 
     # Check if the outcomes are correct
     assert len(outcomes) == 2
@@ -85,7 +87,7 @@ def test_with_small_student_dataset_attribute_participation(small_student_datase
     )
 
     # Check if the calculated gini index (reduction of impurity) is correct
-    assert gini_index_value == 0.25
+    assert gini_index_value == pytest.approx(0.25)
 
     # Check if the outcomes are correct
     # (The split {"Low"}/{"Medium", "High"} and {"High"}/{"Medium", "Low"} have the lowest gini index)

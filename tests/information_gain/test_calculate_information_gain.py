@@ -1,3 +1,5 @@
+import pytest
+
 import information_gain
 
 #####
@@ -20,7 +22,7 @@ def test_with_small_student_dataset_and_major_as_partition_attribute(
     )
 
     # Check if the calculated information gain is correct
-    assert information_gain_value == 0.19087450462110944
+    assert information_gain_value == pytest.approx(0.19087450462110944)
 
 
 def test_with_small_student_dataset_and_participation_as_partition_attribute(
@@ -38,7 +40,7 @@ def test_with_small_student_dataset_and_participation_as_partition_attribute(
     )
 
     # Check if the calculated information gain is correct
-    assert information_gain_value == 0.6666666666666667
+    assert information_gain_value == pytest.approx(0.6666666666666667)
 
 
 def test_with_small_student_dataset_age_as_partition_attribute_and_a_split_point_at_23_5(
@@ -57,7 +59,7 @@ def test_with_small_student_dataset_age_as_partition_attribute_and_a_split_point
     )
 
     # Check if the calculated information gain is correct
-    assert information_gain_value == 0
+    assert information_gain_value == pytest.approx(0)
 
 
 def test_with_small_student_dataset_age_as_partition_attribute_and_a_split_point_at_25_5(
@@ -76,4 +78,4 @@ def test_with_small_student_dataset_age_as_partition_attribute_and_a_split_point
     )
 
     # Check if the calculated information gain is correct
-    assert information_gain_value == 0.08170416594551044
+    assert information_gain_value == pytest.approx(0.08170416594551044)

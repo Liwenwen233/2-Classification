@@ -1,3 +1,5 @@
+import pytest
+
 from decision_tree import DecisionTree
 
 from classes.decision_tree_internal_node import DecisionTreeInternalNode
@@ -108,7 +110,7 @@ def test_with_small_student_dataset_and_information_gain(small_student_dataset):
         len(above_branches) == 1
     )  # There should be exactly one branch with the class DecisionTreeDecisionOutcomeAbove
     above_branch = above_branches[0]
-    assert above_branch.get_label().value == 25.0
+    assert above_branch.get_label().value == pytest.approx(25.0)
 
     # Check the node the branch with class DecisionTreeDecisionOutcomeAbove leads to
     assert isinstance(above_branch.get_branch_node(), DecisionTreeLeafNode)
@@ -124,7 +126,7 @@ def test_with_small_student_dataset_and_information_gain(small_student_dataset):
         len(below_equal_branches) == 1
     )  # There should be exactly one branch with the class DecisionTreeDecisionOutcomeBelowEqual
     below_equal_branch = below_equal_branches[0]
-    assert below_equal_branch.get_label().value == 25.0
+    assert below_equal_branch.get_label().value == pytest.approx(25.0)
 
     # Check the node the branch with class DecisionTreeDecisionOutcomeBelowEqual leads to
     assert isinstance(below_equal_branch.get_branch_node(), DecisionTreeLeafNode)

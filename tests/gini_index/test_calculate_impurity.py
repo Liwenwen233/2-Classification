@@ -1,3 +1,5 @@
+import pytest
+
 import gini_index
 
 #####
@@ -15,4 +17,4 @@ def test_with_small_student_dataset(small_student_dataset):
     )
 
     # Check if the calculated entropy is correct
-    assert entropy == 0.5
+    assert entropy == pytest.approx(0.5)

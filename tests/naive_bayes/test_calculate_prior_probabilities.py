@@ -1,3 +1,5 @@
+import pytest
+
 from naive_bayes import NaiveBayes
 
 #####
@@ -21,8 +23,8 @@ def test_with_small_student_dataset(small_student_dataset):
     )
 
     # Check if the prior probabilities are correct
-    assert prior_probabilities.get_prior_probability("Yes") == 0.5
-    assert prior_probabilities.get_prior_probability("No") == 0.5
+    assert prior_probabilities.get_prior_probability("Yes") == pytest.approx(0.5)
+    assert prior_probabilities.get_prior_probability("No") == pytest.approx(0.5)
 
 
 #####
@@ -46,5 +48,5 @@ def test_with_small_submission_dataset(small_submission_dataset):
     )
 
     # Check if the prior probabilities are correct
-    assert prior_probabilities.get_prior_probability("Yes") == 0.7
-    assert prior_probabilities.get_prior_probability("No") == 0.3
+    assert prior_probabilities.get_prior_probability("Yes") == pytest.approx(0.7)
+    assert prior_probabilities.get_prior_probability("No") == pytest.approx(0.3)

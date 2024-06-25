@@ -1,3 +1,5 @@
+import pytest
+
 import gini_index
 
 
@@ -22,7 +24,7 @@ def test_with_small_student_dataset_major_as_partition_attribute_and_cs_as_split
     )
 
     # Check if the calculated impurity is correct
-    assert impurity_partitioned == 0.4
+    assert impurity_partitioned == pytest.approx(0.4)
 
 
 def test_with_small_student_dataset_major_as_partition_attribute_and_ds_as_split(
@@ -41,7 +43,7 @@ def test_with_small_student_dataset_major_as_partition_attribute_and_ds_as_split
     )
 
     # Check if the calculated impurity is correct
-    assert impurity_partitioned == 0.4
+    assert impurity_partitioned == pytest.approx(0.4)
 
 
 def test_with_small_student_dataset_participation_as_partition_attribute_and_medium_high_as_split(
@@ -60,7 +62,7 @@ def test_with_small_student_dataset_participation_as_partition_attribute_and_med
     )
 
     # Check if the calculated impurity is correct
-    assert impurity_partitioned == 0.25
+    assert impurity_partitioned == pytest.approx(0.25)
 
 
 def test_with_small_student_dataset_participation_as_partition_attribute_and_medium_as_split(
@@ -79,7 +81,7 @@ def test_with_small_student_dataset_participation_as_partition_attribute_and_med
     )
 
     # Check if the calculated impurity is correct
-    assert impurity_partitioned == 0.5
+    assert impurity_partitioned == pytest.approx(0.5)
 
 
 def test_with_small_student_dataset_age_as_partition_attribute_and_split_23_5(
@@ -98,7 +100,7 @@ def test_with_small_student_dataset_age_as_partition_attribute_and_split_23_5(
     )
 
     # Check if the calculated impurity is correct
-    assert impurity_partitioned == 0.5
+    assert impurity_partitioned == pytest.approx(0.5)
 
 
 def test_with_small_student_dataset_age_as_partition_attribute_and_split_25_5(
@@ -117,4 +119,4 @@ def test_with_small_student_dataset_age_as_partition_attribute_and_split_25_5(
     )
 
     # Check if the calculated impurity is correct
-    assert impurity_partitioned == 0.4444444444444444
+    assert impurity_partitioned == pytest.approx(0.4444444444444444)

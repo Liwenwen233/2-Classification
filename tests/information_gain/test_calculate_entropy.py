@@ -1,3 +1,5 @@
+import pytest
+
 import information_gain
 
 #####
@@ -16,4 +18,4 @@ def test_with_small_student_dataset(small_student_dataset):
     )
 
     # Check if the calculated entropy is correct
-    assert entropy == 1
+    assert entropy == pytest.approx(1)

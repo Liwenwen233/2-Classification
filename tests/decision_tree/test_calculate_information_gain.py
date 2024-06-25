@@ -1,3 +1,5 @@
+import pytest
+
 from decision_tree import DecisionTree
 
 from classes.decision_tree_decision_outcome_above import (
@@ -33,7 +35,7 @@ def test_with_small_student_dataset_attribute_age(small_student_dataset):
     )
 
     # Check if the calculated information gain is correct
-    assert information_gain_value == 0.08170416594551044
+    assert information_gain_value == pytest.approx(0.08170416594551044)
 
     # Check if the outcomes are correct (25.0 has the highest information gain)
     assert len(outcomes) == 2
@@ -59,7 +61,7 @@ def test_with_small_student_dataset_attribute_major(small_student_dataset):
     )
 
     # Check if the calculated information gain is correct
-    assert information_gain_value == 0.19087450462110944
+    assert information_gain_value == pytest.approx(0.19087450462110944)
 
     # Check if the outcomes are correct
     assert len(outcomes) == 2
