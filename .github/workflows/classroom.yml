@@ -14,62 +14,170 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Grading of the Information Gain Implementation (Task 1.1.1)
-      id: informationgain
+    - name: Grading of Task 1.1.1.1 - (information_gain) calculate_entropy
+      id: informationgaincalculateentropy
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '1'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/information_gain/test_calculate_entropy.py'
+    - name: Grading of Task 1.1.1.2 - (information_gain) calculate_information_partitioned
+      id: informationgaincalculateinformationpartitioned
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '1'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/information_gain/test_calculate_information_partitioned.py'
+    - name: Grading of Task 1.1.1.3 - (information_gain) calculate_information_gain
+      id: informationgaincalculateinformationgain
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '1'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/information_gain/test_calculate_information_gain.py'
+    - name: Grading of Task 1.1.2.1 - (gini_index) calculate_impurity
+      id: giniindexcalculateimpurity
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '1'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/gini_index/test_calculate_impurity.py'
+    - name: Grading of Task 1.1.2.2 - (gini_index) calculate_impurity_partitioned
+      id: giniindexcalculateimpuritypartitioned
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '1'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/gini_index/test_calculate_impurity_partitioned.py'
+    - name: Grading of Task 1.1.2.3 - (gini_index) calculate_gini_index
+      id: giniindexcalculateginiindex
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '1'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/gini_index/test_calculate_gini_index.py'
+    - name: Grading of Task 1.2.1 - DecisionTree:_calculate_information_gain
+      id: decisiontreecalculateinformationgain
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '3'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/decision_tree/test_calculate_information_gain.py'
+    - name: Grading of Task 1.2.2 - DecisionTree:_calculate_gini_index
+      id: decisiontreecalculateginiindex
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '3'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/decision_tree/test_calculate_gini_index.py'
+    - name: Grading of Task 1.2.3 - DecisionTree:_find_best_split
+      id: decisiontreefindbestsplit
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '6'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/decision_tree/test_find_best_split.py'
+    - name: Grading of Task 1.2.4 - DecisionTree:_build_tree
+      id: decisiontreebuildtree
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '6'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/decision_tree/test_build_tree.py'
+    - name: Grading of Task 1.2.5 - DecisionTree:fit
+      id: decisiontreefit
       uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
       with:
         timeout: '15'
         max-score: '4'
         setup-command: 'pip install -r requirements.txt'
-        test-path: 'tests/information_gain/'
-    - name: Grading of the Gini Index Implementation (Task 1.1.2)
-      id: giniindex
+        test-path: 'tests/decision_tree/test_fit.py'
+    - name: Grading of Task 1.3.1 - DecisionTree:_predict_tuple
+      id: decisiontreepredicttuple
       uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
       with:
         timeout: '15'
-        max-score: '4'
+        max-score: '2'
         setup-command: 'pip install -r requirements.txt'
-        test-path: 'tests/gini_index/'
-    - name: Grading of the Decision Tree Induction Implementation (Task 1.2)
-      id: decisiontreeinduction
-      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
-      with:
-        timeout: '15'
-        max-score: '20'
-        setup-command: 'pip install -r requirements.txt'
-        test-path: 'tests/decision_tree/test_build_tree.py tests/decision_tree/test_calculate_gini_index.py tests/decision_tree/test_calculate_information_gain.py tests/decision_tree/test_find_best_split.py tests/decision_tree/test_fit.py'
-    - name: Grading of the Decision Tree Predict Implementation (Task 1.3)
+        test-path: 'tests/decision_tree/test_predict_tuple.py'
+    - name: Grading of Task 1.3.2 - DecisionTree:predict
       id: decisiontreepredict
       uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
       with:
         timeout: '15'
-        max-score: '4'
+        max-score: '2'
         setup-command: 'pip install -r requirements.txt'
-        test-path: 'tests/decision_tree/test_predict_tuple.py tests/decision_tree/test_predict.py'
-    - name: Grading of the Naive Bayes Training Implementation (Task 2.1)
-      id: naivebayestraining
+        test-path: 'tests/decision_tree/test_predict.py'
+    - name: Grading of Task 2.1.1 - NaiveBayes:_calculate_prior_probabilities
+      id: naivebayescalculatepriorprobabilities
       uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
       with:
         timeout: '15'
-        max-score: '14'
+        max-score: '4'
         setup-command: 'pip install -r requirements.txt'
-        test-path: 'tests/naive_bayes/test_calculate_likelihoods.py tests/naive_bayes/test_calculate_prior_probabilities.py tests/naive_bayes/test_fit.py'
-    - name: Grading of the Naive Bayes Predict Implementation (Task 2.2)
+        test-path: 'tests/naive_bayes/test_calculate_prior_probabilities.py'
+    - name: Grading of Task 2.1.2 - NaiveBayes:_calculate_likelihoods
+      id: naivebayescalculatelikelihoods
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '6'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/naive_bayes/test_calculate_likelihoods.py'
+    - name: Grading of Task 2.1.3 - NaiveBayes:fit
+      id: naivebayesfit
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '4'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/naive_bayes/test_fit.py'
+    - name: Grading of Task 2.2.1 - NaiveBayes:_predict_tuple
+      id: naivebayespredicttuple
+      uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
+      with:
+        timeout: '15'
+        max-score: '2'
+        setup-command: 'pip install -r requirements.txt'
+        test-path: 'tests/naive_bayes/test_predict_tuple.py'
+    - name: Grading of Task 2.2.2 - NaiveBayes:predict
       id: naivebayespredict
       uses: FAU-CS6-KDDmUe-Submissions/Custom-Python-Autograder@v1
       with:
         timeout: '15'
-        max-score: '4'
+        max-score: '2'
         setup-command: 'pip install -r requirements.txt'
-        test-path: 'tests/naive_bayes/test_predict_tuple.py tests/naive_bayes/test_predict.py'
+        test-path: 'tests/naive_bayes/test_predict.py'
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        INFORMATIONGAIN_RESULTS: "${{steps.informationgain.outputs.result}}"
-        GINIINDEX_RESULTS: "${{steps.giniindex.outputs.result}}"
-        DECISIONTREEINDUCTION_RESULTS: "${{steps.decisiontreeinduction.outputs.result}}"
+        INFORMATIONGAINCALCULATEENTROPY_RESULTS: "${{steps.informationgaincalculateentropy.outputs.result}}"
+        INFORMATIONGAINCALCULATEINFORMATIONPARTITIONED_RESULTS: "${{steps.informationgaincalculateinformationpartitioned.outputs.result}}"
+        INFORMATIONGAINCALCULATEINFORMATIONGAIN_RESULTS: "${{steps.informationgaincalculateinformationgain.outputs.result}}"
+        GINIINDEXCALCULATEIMPURITY_RESULTS: "${{steps.giniindexcalculateimpurity.outputs.result}}"
+        GINIINDEXCALCULATEIMPURITYPARTITIONED_RESULTS: "${{steps.giniindexcalculateimpuritypartitioned.outputs.result}}"
+        GINIINDEXCALCULATEGINIINDEX_RESULTS: "${{steps.giniindexcalculateginiindex.outputs.result}}"
+        DECISIONTREECALCULATEINFORMATIONGAIN_RESULTS: "${{steps.decisiontreecalculateinformationgain.outputs.result}}"
+        DECISIONTREECALCULATEGINIINDEX_RESULTS: "${{steps.decisiontreecalculateginiindex.outputs.result}}"
+        DECISIONTREEFINDBESTSPLIT_RESULTS: "${{steps.decisiontreefindbestsplit.outputs.result}}"
+        DECISIONTREEBUILDTREE_RESULTS: "${{steps.decisiontreebuildtree.outputs.result}}"
+        DECISIONTREEFIT_RESULTS: "${{steps.decisiontreefit.outputs.result}}"
+        DECISIONTREEPREDICTTUPLE_RESULTS: "${{steps.decisiontreepredicttuple.outputs.result}}"
         DECISIONTREEPREDICT_RESULTS: "${{steps.decisiontreepredict.outputs.result}}"
-        NAIVEBAYESTRAINING_RESULTS: "${{steps.naivebayestraining.outputs.result}}"
+        NAIVEBAYESCALCULATEPRIORPROBABILITIES_RESULTS: "${{steps.naivebayescalculatepriorprobabilities.outputs.result}}"
+        NAIVEBAYESCALCULATELIKELIHOODS_RESULTS: "${{steps.naivebayescalculatelikelihoods.outputs.result}}"
+        NAIVEBAYESFIT_RESULTS: "${{steps.naivebayesfit.outputs.result}}"
+        NAIVEBAYESPREDICTTUPLE_RESULTS: "${{steps.naivebayespredicttuple.outputs.result}}"
         NAIVEBAYESPREDICT_RESULTS: "${{steps.naivebayespredict.outputs.result}}"
       with:
-        runners: informationgain, giniindex, decisiontreeinduction, decisiontreepredict, naivebayestraining, naivebayespredict
+        runners: informationgaincalculateentropy, informationgaincalculateinformationpartitioned, informationgaincalculateinformationgain, giniindexcalculateimpurity, giniindexcalculateimpuritypartitioned, giniindexcalculateginiindex, decisiontreecalculateinformationgain, decisiontreecalculateginiindex, decisiontreefindbestsplit, decisiontreebuildtree, decisiontreefit, decisiontreepredicttuple, decisiontreepredict, naivebayescalculatepriorprobabilities, naivebayescalculatelikelihoods, naivebayesfit, naivebayespredicttuple, naivebayespredict
