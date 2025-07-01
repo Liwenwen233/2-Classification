@@ -130,6 +130,46 @@ class DecisionTree:
             raise ValueError(f"Attribute '{attribute}' not in dataset.")
 
         # TODO
+        col = data[attribute]
+        is_numeric = pd.api.types.is_numeric_dtype(col)
+        if is_numeric:
+            unique_vals = sorted(col.dropna().unique())
+            if len(unique_vals) <= 1:
+                return 0.0, []
+            best_gain = -float("inf")
+            best_threshold = None
+            for i in range(len(unique_vals) - 1):
+                threshold = (unique_vals[i] + unique_vals[i + 1]) / 2
+                gain = information_gain.calculate_information_gain(
+                    data,
+                    self.target_attribute,
+                    attribute,
+                    split_value=threshold,
+                )
+                if gain > best_gain:
+                    best_gain = gain
+                    best_threshold = threshold
+            if best_threshold is None or best_gain <= 0:
+                return 0.0, []
+            outcomes = [
+                DecisionTreeDecisionOutcomeBelowEqual(best_threshold),
+                DecisionTreeDecisionOutcomeAbove(best_threshold),
+            ]
+            return best_gain, outcomes
+        else:
+            gain = information_gain.calculate_information_gain(
+                data,
+                self.target_attribute,
+                attribute,
+                split_value=None,        
+            )
+            categories = col.dropna().unique()
+            if len(categories) == 0 or gain <= 0:
+                return 0.0, []
+            outcomes = [
+                DecisionTreeDecisionOutcomeEquals(cat) for cat in categories
+            ]
+            return gain, outcomes
 
     def _calculate_gini_index(
         self, data: pd.DataFrame, attribute: str
