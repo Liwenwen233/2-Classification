@@ -67,6 +67,10 @@ class DecisionTree:
             )
 
         # TODO
+        self.target_attribute = target_attribute
+        attributes = [col for col in dataset.columns if col != target_attribute]
+        self.tree = self._build_tree(dataset, attributes, attribute_selection_method)
+        return self
 
     def _build_tree(
         self,
@@ -86,7 +90,33 @@ class DecisionTree:
         DecisionTreeNode: The root node of the decision tree
         """
         # TODO
-
+        target_vals = data[self.target_attribute]
+        if target_vals.nunique() == 1:
+            return DecisionTreeLeafNode(target_vals.iloc[0])
+        if not attribute_list:
+            majority = target_vals.mode()[0]
+            return DecisionTreeLeafNode(majority)
+        best_attr, outcomes = self._find_best_split(
+            data, attribute_list, attribute_selection_method
+        )
+        if not outcomes:
+            majority = target_vals.mode()[0]
+            return DecisionTreeLeafNode(majority)
+        branches = []
+        majority = target_vals.mode()[0]
+        for outcome in outcomes:
+            mask = data[best_attr].apply(lambda v: outcome.value_matches(v))
+            subset = data[mask]
+            if subset.empty:
+                child = DecisionTreeLeafNode(majority)
+            else:
+                remaining_attrs = [a for a in attribute_list if a != best_attr]
+                child = self._build_tree(
+                    subset, remaining_attrs, attribute_selection_method
+                )
+            branches.append(DecisionTreeBranch(outcome, child))
+        return DecisionTreeInternalNode(best_attr, branches)
+    
     def _find_best_split(
         self,
         data: pd.DataFrame,
@@ -106,6 +136,23 @@ class DecisionTree:
         List[DecisionTreeDecisionOutcome]: The outcomes a split on this attribute should have
         """
         # TODO
+        if not attribute_list:
+            raise ValueError("No attributes available for splitting.")
+        best_attr: str = None
+        best_outcomes: List[DecisionTreeDecisionOutcome] = []
+        best_score: float = -float("inf")
+        for attr in attribute_list:
+            if attribute_selection_method == "information_gain":
+                score, outcomes = self._calculate_information_gain(data, attr)
+            elif attribute_selection_method == "gini_index":
+                score, outcomes = self._calculate_gini_index(data, attr)
+            else:
+                raise ValueError(f"Unknown attribute_selection_method: {attribute_selection_method!r}")
+            if score > best_score:
+                best_score = score
+                best_attr = attr
+                best_outcomes = outcomes
+        return best_attr, best_outcomes
 
     def _calculate_information_gain(
         self, data: pd.DataFrame, attribute: str
@@ -268,6 +315,35 @@ class DecisionTree:
             raise ValueError("Tree not fitted. Call fit method first.")
 
         # TODO
+        predictions: List[str | int | float] = []
+        for _, row in dataset.iterrows():
+            node = self.tree
+            while isinstance(node, DecisionTreeNode) and not isinstance(node, DecisionTreeLeafNode):
+                branches = node.get_branches()
+                chosen_child = None
+                for branch in branches:
+                    outcome = next(
+                        (v for v in vars(branch).values() if isinstance(v, DecisionTreeDecisionOutcome)),
+                        None,
+                    )
+                    child = next(
+                        (v for v in vars(branch).values() if isinstance(v, DecisionTreeNode)),
+                        None,
+                    )
+                    if outcome is None or child is None:
+                        continue
+                    if outcome.value_matches(row[node.get_label()]):
+                        chosen_child = child
+                        break
+                if chosen_child is None:
+                    break
+                node = chosen_child
+            if isinstance(node, DecisionTreeLeafNode):
+                predictions.append(node.get_label())
+            else:
+                majority = dataset[self.target_attribute].mode()[0]
+                predictions.append(majority)
+        return predictions
 
     def _predict_tuple(
         self, tuple: pd.Series, node: DecisionTreeNode
@@ -284,3 +360,12 @@ class DecisionTree:
         str | int | float: The predicted class label
         """
         # TODO
+        if isinstance(node, DecisionTreeLeafNode):
+            return node.get_label()
+        assert isinstance(node, DecisionTreeInternalNode), "Node must be internal or leaf"
+        attr = node.get_label()
+        val = tuple[attr]
+        for branch in node.get_branches():
+            if branch.value_matches(val):
+                return self._predict_tuple(tuple, branch.get_branch_node())
+        raise ValueError(f"No branch for value {val!r} of attribute '{attr}'")
