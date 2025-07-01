@@ -194,7 +194,64 @@ class DecisionTree:
             raise ValueError(f"Attribute '{attribute}' not in dataset.")
 
         # TODO
+        col = data[attribute]
+        is_numeric = pd.api.types.is_numeric_dtype(col)
+        if is_numeric:
+            unique_vals = sorted(col.dropna().unique())
+            if len(unique_vals) <= 1:
+                return 0.0, []
+            best_gain = -float("inf")
+            best_threshold = None
+            for i in range(len(unique_vals) - 1):
+                thresh = (unique_vals[i] + unique_vals[i + 1]) / 2
+                gain = gini_index.calculate_gini_index(
+                    data,
+                    self.target_attribute,
+                    attribute,
+                    split=thresh,
+                )
+                if gain > best_gain:
+                    best_gain = gain
+                    best_threshold = thresh
+            if best_threshold is None or best_gain <= 0:
+                return 0.0, []
+            outcomes = [
+                DecisionTreeDecisionOutcomeBelowEqual(best_threshold),
+                DecisionTreeDecisionOutcomeAbove(best_threshold),
+            ]
+            return best_gain, outcomes
+        else:
+            unique_cats = list(col.dropna().unique())
+            m = len(unique_cats)
+            if m <= 1:
+                return 0.0, []
+            base_impurity = gini_index.calculate_impurity(data, self.target_attribute)
+            best_gain = -float("inf")
+            best_subset: Set = set()
+            from itertools import combinations
+            for r in range(1, m // 2 + 1):
+                for subset in combinations(unique_cats, r):
+                    subset_set = set(subset)
+                    imp_after = gini_index.calculate_impurity_partitioned(
+                        data,
+                        self.target_attribute,
+                        attribute,
+                        split=subset_set,
+                    )
+                    gain = base_impurity - imp_after
+                    if gain > best_gain:
+                        best_gain = gain
+                        best_subset = subset_set
+            if best_gain <= 0:
+                return 0.0, []
+            other = set(unique_cats) - best_subset
+            outcomes = [
+                DecisionTreeDecisionOutcomeInList(list(best_subset)),
+                DecisionTreeDecisionOutcomeInList(list(other)),
+            ]
+            return best_gain, outcomes
 
+    
     def predict(self, dataset: pd.DataFrame) -> List[str | int | float]:
         """
         Predict the target attribute for a given dataset.
